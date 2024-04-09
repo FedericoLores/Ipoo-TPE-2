@@ -30,13 +30,6 @@ function revisarMaximo($viaje){
     return $tieneEspacio;
 }
 
-/** recibe obj viaje y numero de pasajero, elimina ese pasajero de la lista
- * @param Viaje $viaje
- * @param int $numeroPasajero
- */
-function borrarPasajero($viaje, $numeroPasajero){
-    unset($viaje->getPasajeros()[$numeroPasajero]);
-}
 
 $continuar = true;
 $opcion=0;
@@ -50,9 +43,9 @@ $objResponsable = new ResponsableV("Eugenio", "Cangrejo", 666, 123456);
 $objViaje = new Viaje(123, "jujuy", $arregloPasajero, 4, $objResponsable);
 
 //menu
-while ($opcion != 9){
+while ($opcion != 8){
     echo "seleccione una opción: ";
-    echo "\n1:mostrar informacion viaje \n2:modificar informacion viaje \n3:ver lista de pasajeros \n4:modificar datos de pasajeros: \n5:agregar pasajeros \n6:borrar pasajero \n7:ver responsable \n8:modificar datos de responsable \n9:salir\n";
+    echo "\n1:mostrar informacion viaje \n2:modificar informacion viaje \n3:ver lista de pasajeros \n4:modificar datos de pasajeros: \n5:agregar pasajeros \n6:ver responsable \n7:modificar datos de responsable \n8:salir\n";
     $opcion = trim(fgets(STDIN));
     switch($opcion){
         case 1:
@@ -80,7 +73,7 @@ while ($opcion != 9){
                         $maxPasajeros=trim(fgets(STDIN));
                         $objViaje->setMaxPasajeros($maxPasajeros);
                         break;
-                    case 9:
+                    case 8:
                         $opcion = 0;
                         break;
                 }
@@ -100,7 +93,7 @@ while ($opcion != 9){
         case 4:
             //modificar pasajeros
             echo "seleccione una opción: ";
-            echo "\n1: modificar nombre \n2:modificar apellido \n3:modificar telefono \n4:modificar numero de documento \n5: volver al menu";
+            echo "\n1: modificar nombre \n2:modificar apellido \n3:modificar telefono \n4:modificar numero de documento \npresione cualquier tecla para volver al menu";
             $opcion = trim(fgets(STDIN));
                 switch($opcion){
                     case 1:
@@ -117,14 +110,12 @@ while ($opcion != 9){
                         $apellido=trim(fgets(STDIN));
                         $objViaje->getPasajeros()[$numero - 1]->setApellido($apellido);
                         break;
-                        break;
                     case 3:
                         echo "ingrese numero de pasajero: ";
                         $numero=trim(fgets(STDIN));
                         echo "ingrese nuevo telefono: ";
                         $telefono=trim(fgets(STDIN));
                         $objViaje->getPasajeros()[$numero - 1]->setTelefono($telefono);
-                        break;
                         break;
                     case 4:
                         echo "ingrese numero de pasajero: ";
@@ -133,12 +124,9 @@ while ($opcion != 9){
                         $documento=trim(fgets(STDIN));
                         $objViaje->getPasajeros()[$numero - 1]->setNumDoc($documento);
                         break;
-                        break;
-                    case 9:
+                    case 8:
                         $opcion = 0;
                         break;
-                    default:
-                        echo "ingrese un número valido";
                 }
             break;
         case 5:
@@ -165,34 +153,43 @@ while ($opcion != 9){
             
             break;
         case 6:
-            //borrar pasajero
-            echo "ingrese numero del pasajero que desea borrar";
-            $numPasajero = trim(fgets(STDIN));
-            if ($numPasajero > 0 && $numPasajero <= count($objViaje->getPasajeros())){
-                echo $objViaje->getPasajeros()[$numPasajero]->getNombre . "borrado";
-                borrarPasajero($objViaje, $numPasajero);
-            } else {
-                echo "el pasajero no existe";
-            }
-            break;
-        case 7:
             //ver responsable
             $objViaje->getResponsableViaje();
             break;
-        case 8:
+        case 7:
             //modificar responsable
-            echo "ingrese nombre: ";
-            $nombre= trim(fgets(STDIN));
-            echo "ingrese apellido: ";
-            $apellido= trim(fgets(STDIN));
-            echo "ingrese telefono: ";
-            $numeroEmpleado= trim(fgets(STDIN));
-            echo "ingrese numero de licencia: ";
-            $numeroLicencia= trim(fgets(STDIN));
+            echo "seleccione una opción: ";
+            echo "\n1: modificar nombre \n2:modificar apellido \n3:modificar numero de empleado \n4:modificar numero de licencia \npresione cualquier tecla para volver al menu";
+            $opcion = trim(fgets(STDIN));
+                switch($opcion){
+                    case 1:
+                        echo "ingrese nuevo nombre: ";
+                        $nombre=trim(fgets(STDIN));
+                        $objViaje->getResponsableViaje()[$numero - 1]->setNombre($nombre);
+                        break;
+                    case 2:
+                        echo "ingrese nuevo apellido: ";
+                        $apellido=trim(fgets(STDIN));
+                        $objViaje->getResponsableViaje()[$numero - 1]->setApellido($apellido);
+                        break;
+                    case 3:
+                        echo "ingrese nuevo numero de empleado: ";
+                        $numeroEmpleado=trim(fgets(STDIN));
+                        $objViaje->getResponsableViaje()[$numero - 1]->setNumEmpleado($numeroEmpleado);
+                        break;
+                    case 4:
+                        echo "ingrese nuevo numero de licencia: ";
+                        $numeroLicencia=trim(fgets(STDIN));
+                        $objViaje->getResponsableViaje()[$numero - 1]->setNumLicencia($numeroLicencia);
+                            break;
+                    case 8:
+                        $opcion = 0;
+                        break;
+                }
             $responsable = new ResponsableV($nombre, $apellido, $numeroEmpleado, $numeroLicencia);
             $objViaje->setResponsableViaje($responsable);
             break;
-        case 9:
+        case 8:
             //salir
             echo "Adios";
             break;
