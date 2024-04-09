@@ -22,4 +22,3 @@ Implementar las operaciones que permiten modificar el nombre, apellido y teléfo
 Lores Federico
    - Legajo: 2984
    - Mail: federico.lores@est.fi.uncoma.edu.ar
-   - [![GITHUB][personal-shield]][personal-url]
