@@ -5,7 +5,7 @@ class Viaje {
     private $destino;//string
     private $pasajeros;//arreglo de objetos nombre/apellido/numDoc/telefono
     private $maxPasajeros;//int
-    private $responsableViaje;//obj
+    private $responsableViaje;//obj nombre/apellido/
 
     public function __construct($codigoCnstr ,$destinoCnstr, $pasajerosCnstr, $maxPasajerosCnstr, $responsableViajeCnstr){
         $this->codigo = $codigoCnstr;
@@ -45,6 +45,7 @@ class Viaje {
         return $this->responsableViaje;
     }
 
+
     public function setCodigo($codigoNew){
         $this->codigo = $codigoNew;
     }
@@ -75,6 +76,16 @@ class Viaje {
         $this->responsableViaje = $responsableViajeNew;
     }
 
+    public function __toString(){
+        $i=1;
+        $string = "codigo: " . $this->getCodigo() . " \ndestino: " . $this->getDestino() . " \npasajeros: ";
+        foreach($this->getPasajeros() as $pasajero){
+            $string = $string . "pasajero " . $i . ": " . $pasajero . " \n";
+            $i++;
+        }
+        $string = $string . "maximo de pasajeros: " . $this->getMaxPasajeros() . " \nresponsable del viaje: " . $this->getResponsableViaje() . "\n";
+        return $string;
+    }
 
 
 
