@@ -25,5 +25,7 @@ while ($continuar){
 $continuar = true;
 $opcion;
 
+$objViaje = new Viaje(123, "chubut", [], 4);
+
 
 ?>

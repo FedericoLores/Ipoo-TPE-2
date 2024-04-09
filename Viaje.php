@@ -3,14 +3,16 @@
 class Viaje {
     private $codigo;//int
     private $destino;//string
-    private $pasajeros;//arreglo de arreglos/de objetos? nombre/apellido/numDoc
+    private $pasajeros;//arreglo de objetos nombre/apellido/numDoc/telefono
     private $maxPasajeros;//int
+    private $responsableViaje;//obj
 
-    public function __construct($codigoCnstr ,$destinoCnstr, $pasajerosCnstr, $maxPasajerosCnstr){
+    public function __construct($codigoCnstr ,$destinoCnstr, $pasajerosCnstr, $maxPasajerosCnstr, $responsableViajeCnstr){
         $this->codigo = $codigoCnstr;
         $this->destino = $destinoCnstr;
         $this->pasajeros = $pasajerosCnstr;
         $this->maxPasajeros = $maxPasajerosCnstr;
+        $this->responsableViaje = $responsableViajeCnstr;
     }
 
     public function getCodigo(){
@@ -35,8 +37,12 @@ class Viaje {
         return $this->pasajeros[$indice][$llave];
     }
 
-    public function getmaxPasajeros(){
+    public function getMaxPasajeros(){
         return $this->maxPasajeros;
+    }
+
+    public function getResponsableViaje(){
+        return $this->responsableViaje;
     }
 
     public function setCodigo($codigoNew){
@@ -61,8 +67,12 @@ class Viaje {
         $this->pasajeros[$indice][$llave] = $dato;
     }
 
-    public function setmaxPasajeros($maxPasajerosNew){
+    public function setMaxPasajeros($maxPasajerosNew){
         $this->maxPasajeros =$maxPasajerosNew;
+    }
+
+    public function setResponsableViaje($responsableViajeNew){
+        $this->responsableViaje = $responsableViajeNew;
     }
 
 
