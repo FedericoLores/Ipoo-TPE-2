@@ -1,8 +1,8 @@
 <div align="center">
 
-# Trabajo Final de Introducción a la Programacion - 2023
+# Trabajo Practico Evaluativo
 
-## Grupo 8
+## Introducción a la Programación Orientada a Objetos 2024
 
 </div>
 
