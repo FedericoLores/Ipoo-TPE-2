@@ -87,7 +87,40 @@ class Viaje {
         return $string;
     }
 
+    /** recibe documento de pasajero y revisa que el pasajero no sea parte del viaje
+     * @param int $numeroDocumento
+     * @return boolean
+     */
+    function seRepite($numeroDocumento){
+        $i = 0;
+        $repetido = false;
+        while ($i<count($this->getPasajeros()) && $this->getPasajeros()[$i]->getNumDoc() != $numeroDocumento){
+            $i++;
+        }
+        if ($i<count($this->getPasajeros())){
+            $repetido = true;
+        }
+        return $repetido;
+    }
 
+    /** retorna si tiene espacio para mas pasajeros
+     * @return boolean
+     */
+    function revisarMaximo(){
+        $tieneEspacio = count($this->getPasajeros()) < $this->getMaxPasajeros();
+        return $tieneEspacio;
+    }
+
+
+    /** recibe numero de pasajero, elimina ese pasajero
+     * @param int $numeroPasajero
+    */
+    function borrarPasajero($numeroPasajero){
+        $arregloPasajeros = $this->getPasajeros();
+        unset($arregloPasajeros[$numeroPasajero]);
+        $arregloPasajeros = array_values($arregloPasajeros);
+        $this->setPasajeros($arregloPasajeros);
+    }
 
 }
 

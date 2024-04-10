@@ -4,48 +4,18 @@ include 'Pasajero.php';
 include 'ResponsableV.php';
 //se asume que el usuario va a ingresar datos del tipo que se le pide
 
-
-/** recibe viaje y documento de pasajero y revisa que el pasajero no sea parte del viaje
- * @param Viaje $viaje
- * @return boolean
- */
-function seRepite($viaje, $numeroDocumento){
-    $i = 0;
-    $repetido = false;
-    while ($i<count($viaje->getPasajeros()) && $viaje->getPasajeros()[$i]->getNumDoc() != $numeroDocumento){
-        $i++;
-    }
-    if ($i<count($viaje->getPasajeros())){
-        $repetido = true;
-    }
-    return $repetido;
-}
-
-/** recibe un viaje y retorna si tiene espacio para mas pasajeros
- * @param Viaje $viaje
- * @return boolean
- */
-function revisarMaximo($viaje){
-    $tieneEspacio = count($viaje->getPasajeros()) < $viaje->getMaxPasajeros();
-    return $tieneEspacio;
-}
-
-
-$continuar = true;
 $opcion=0;
-
-$pasajero = new Pasajero("","",0,0);
-$pasajero1 = new Pasajero("Roberto", "Esponja", 123, 11111111);
-$pasajero2 = new Pasajero("Patricio", "Estrella", 123, 22222222);
-$pasajero3 = new Pasajero("Calamardo", "Tentaculos", 123, 33333333);
+$pasajero1 = new Pasajero("Roberto", "Esponja", 111222333, 11111111);
+$pasajero2 = new Pasajero("Patricio", "Estrella", 123123123, 22222222);
+$pasajero3 = new Pasajero("Calamardo", "Tentaculos", 321321321, 33333333);
 $arregloPasajero = [$pasajero1, $pasajero2, $pasajero3];
 $objResponsable = new ResponsableV("Eugenio", "Cangrejo", 666, 123456);
-$objViaje = new Viaje(123, "jujuy", $arregloPasajero, 4, $objResponsable);
+$objViaje = new Viaje(1000, "jujuy", $arregloPasajero, 4, $objResponsable);
 
 //menu
-while ($opcion != 8){
+do {
     echo "seleccione una opción: ";
-    echo "\n1:mostrar informacion viaje \n2:modificar informacion viaje \n3:ver lista de pasajeros \n4:modificar datos de pasajeros: \n5:agregar pasajeros \n6:ver responsable \n7:modificar datos de responsable \n8:salir\n";
+    echo "\n1:mostrar informacion viaje \n2:modificar informacion viaje \n3:ver lista de pasajeros \n4:modificar datos de pasajeros: \n5:agregar pasajeros \n6:borrar pasajero \n7:ver responsable \n8:modificar datos de responsable \n9:salir\n";
     $opcion = trim(fgets(STDIN));
     switch($opcion){
         case 1:
@@ -72,8 +42,13 @@ while ($opcion != 8){
                         echo "ingrese nuevo maximo de pasajeros: ";
                         $maxPasajeros=trim(fgets(STDIN));
                         $objViaje->setMaxPasajeros($maxPasajeros);
+                        if($maxPasajeros < count($objViaje->getPasajeros())){
+                            for($i=$maxPasajeros; $i<=count($objViaje->getPasajeros());$i++){
+                                $objViaje->borrarPasajero(count($objViaje->getPasajeros())-1);
+                            }
+                        }
                         break;
-                    case 8:
+                    case 9:
                         $opcion = 0;
                         break;
                 }
@@ -124,17 +99,17 @@ while ($opcion != 8){
                         $documento=trim(fgets(STDIN));
                         $objViaje->getPasajeros()[$numero - 1]->setNumDoc($documento);
                         break;
-                    case 8:
+                    case 9:
                         $opcion = 0;
                         break;
                 }
             break;
         case 5:
             //agregar pasajeros
-            if (revisarMaximo($objViaje)){
+            if ($objViaje->revisarMaximo()){
                 echo "ingrese documento: ";
                 $documento= trim(fgets(STDIN));
-                if (!(seRepite($objViaje, $documento))){
+                if (!($objViaje->seRepite($documento))){
                     echo "ingrese nombre: ";
                     $nombre= trim(fgets(STDIN));
                     echo "ingrese apellido: ";
@@ -153,13 +128,24 @@ while ($opcion != 8){
             
             break;
         case 6:
-            //ver responsable
-            $objViaje->getResponsableViaje();
+            //borrar pasajero
+            echo "ingrese numero del pasajero que desea borrar\n";
+            $numPasajero = trim(fgets(STDIN));
+            if ($numPasajero > 0 && $numPasajero <= count($objViaje->getPasajeros())){
+                $objViaje->borrarPasajero($numPasajero-1);
+                echo "borrado\n";
+            } else {
+                echo "el pasajero no existe\n";
+            }
             break;
         case 7:
+            //ver responsable
+            echo $objViaje->getResponsableViaje();
+            break;
+        case 8:
             //modificar responsable
             echo "seleccione una opción: ";
-            echo "\n1: modificar nombre \n2:modificar apellido \n3:modificar numero de empleado \n4:modificar numero de licencia \npresione cualquier tecla para volver al menu";
+            echo "\n1:modificar nombre \n2:modificar apellido \n3:modificar numero de empleado \n4:modificar numero de licencia \npresione cualquier tecla para volver al menu";
             $opcion = trim(fgets(STDIN));
                 switch($opcion){
                     case 1:
@@ -182,20 +168,20 @@ while ($opcion != 8){
                         $numeroLicencia=trim(fgets(STDIN));
                         $objViaje->getResponsableViaje()[$numero - 1]->setNumLicencia($numeroLicencia);
                             break;
-                    case 8:
+                    case 9:
                         $opcion = 0;
                         break;
                 }
             $responsable = new ResponsableV($nombre, $apellido, $numeroEmpleado, $numeroLicencia);
             $objViaje->setResponsableViaje($responsable);
             break;
-        case 8:
+        case 9:
             //salir
             echo "Adios";
             break;
         default:
             echo "ingrese un número valido\n";
     }
-}
+} while ($opcion != 9)
 
 ?>
