@@ -106,24 +106,24 @@ do {
             break;
         case 5:
             //agregar pasajeros
-            if ($objViaje->revisarMaximo()){
+            if ($objViaje->hayPasajesDisponible()){
                 echo "ingrese documento: ";
-                $documento= trim(fgets(STDIN));
+                $documentoP= trim(fgets(STDIN));
                 if (!($objViaje->seRepite($documento))){
                     echo "ingrese nombre: ";
-                    $nombre= trim(fgets(STDIN));
+                    $nombreP= trim(fgets(STDIN));
                     echo "ingrese apellido: ";
-                    $apellido= trim(fgets(STDIN));
+                    $apellidoP= trim(fgets(STDIN));
                     echo "ingrese telefono: ";
-                    $telefono= trim(fgets(STDIN));
+                    $telefonoP= trim(fgets(STDIN));
                     $pasajero = new Pasajero($nombre, $apellido, $telefono, $documento);
-                    $objViaje->setUnPasajero(count($objViaje->getPasajeros()), $pasajero);
-                } else {
-                    echo "el pasajero ya esta anotado";
+                    $objViaje->agregarPasajero($pasajero);
+                    echo "agregado\n";
+                }else{
+                    echo "el pasajero ya esta anotado\n";
                 }
-                
             } else {
-                echo "no hay espacio.";
+                echo "no hay espacio en el viaje";
             }
             
             break;

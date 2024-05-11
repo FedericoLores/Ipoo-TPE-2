@@ -6,13 +6,17 @@ class Viaje {
     private $pasajeros;//arreglo de objetos nombre/apellido/numDoc/telefono
     private $maxPasajeros;//int
     private $responsableViaje;//obj nombre/apellido/
+    private $costoViaje;
+    private $costosAbonados; //acumuladoe
 
-    public function __construct($codigoCnstr ,$destinoCnstr, $pasajerosCnstr, $maxPasajerosCnstr, $responsableViajeCnstr){
+    public function __construct($codigoCnstr ,$destinoCnstr, $pasajerosCnstr, $maxPasajerosCnstr, $responsableViajeCnstr, $costoViajeCnstr, $costosAbonadosCnstr){
         $this->codigo = $codigoCnstr;
         $this->destino = $destinoCnstr;
         $this->pasajeros = $pasajerosCnstr;
         $this->maxPasajeros = $maxPasajerosCnstr;
         $this->responsableViaje = $responsableViajeCnstr;
+        $this->costoViaje = $costoViajeCnstr;
+        $this->costosAbonados = $costosAbonadosCnstr;
     }
 
     public function getCodigo(){
@@ -76,6 +80,22 @@ class Viaje {
         $this->responsableViaje = $responsableViajeNew;
     }
 
+    public function getCostoViaje(){
+        return $this->costoViaje;
+    }
+
+    public function setCostoViaje($costoViajeNew){
+        $this->costoViaje = $costoViajeNew;
+    }
+
+    public function getCostosAbonados(){
+        return $this->costosAbonados;
+    }
+
+    public function setCostosAbonados($costosAbonadosNew){
+        $this->costosAbonados = $costosAbonadosNew;
+    }
+
     public function __toString(){
         $i=1;
         $string = "codigo: " . $this->getCodigo() . " \ndestino: " . $this->getDestino() . " \npasajeros: ";
@@ -83,7 +103,7 @@ class Viaje {
             $string = $string . "pasajero " . $i . ": " . $pasajero . " \n";
             $i++;
         }
-        $string = $string . "maximo de pasajeros: " . $this->getMaxPasajeros() . " \nresponsable del viaje: " . $this->getResponsableViaje() . "\n";
+        $string = $string . "maximo de pasajeros: " . $this->getMaxPasajeros() . " \nresponsable del viaje: " . $this->getResponsableViaje() . "\ncosto de viaje: " . $this->getCostoViaje() . "\ntotal de costos abonados: " . $this->getCostosAbonados() . "\n";
         return $string;
     }
 
@@ -91,7 +111,7 @@ class Viaje {
      * @param int $numeroDocumento
      * @return boolean
      */
-    function seRepite($numeroDocumento){
+    public function seRepite($numeroDocumento){
         $i = 0;
         $repetido = false;
         while ($i<count($this->getPasajeros()) && $this->getPasajeros()[$i]->getNumDoc() != $numeroDocumento){
@@ -106,20 +126,34 @@ class Viaje {
     /** retorna si tiene espacio para mas pasajeros
      * @return boolean
      */
-    function revisarMaximo(){
+    public function hayPasajesDisponible(){
         $tieneEspacio = count($this->getPasajeros()) < $this->getMaxPasajeros();
         return $tieneEspacio;
+    }
+
+    public function agregarPasajero($objPasajero){
+        $this->setUnPasajero(count($this->getPasajeros()), $objPasajero);
     }
 
 
     /** recibe numero de pasajero, elimina ese pasajero
      * @param int $numeroPasajero
     */
-    function borrarPasajero($numeroPasajero){
+    public function borrarPasajero($numeroPasajero){
         $arregloPasajeros = $this->getPasajeros();
         unset($arregloPasajeros[$numeroPasajero]);
         $arregloPasajeros = array_values($arregloPasajeros);
         $this->setPasajeros($arregloPasajeros);
+    }
+
+    public function venderPasaje($objPasajero){
+        $costo = -1;
+        if($this->hayPasajesDisponible()){
+            $this->agregarPasajero($objPasajero);
+            $costo += $costo * $objPasajero->darPorcentajeIncremento();
+            $this->setCostosAbonados($this->getCostosAbonados() + $costo);
+        }
+        return $costo;
     }
 
 }
