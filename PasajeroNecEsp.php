@@ -4,6 +4,13 @@ class PasajeroNecEsp extends Pasajero{
     private $asistencia;
     private $comidaEsp;
 
+    public function __construct($nombreCnstr, $apellidoCnstr, $telefonoCnstr, $nroDocCnstr, $numAsientoCnstr, $numTicketCnstr, $sillaRuedasCnstr, $asistenciaCnstr, $comidaEspCnstr){
+        parent::__construct($nombreCnstr, $apellidoCnstr, $telefonoCnstr, $nroDocCnstr, $numAsientoCnstr, $numTicketCnstr);
+        $this->sillaRuedas = $sillaRuedasCnstr;
+        $this->asistencia = $asistenciaCnstr;
+        $this->comidaEsp = $comidaEspCnstr;
+    }
+
     public function getSillaRuedas(){
         return $this->sillaRuedas;
     }
@@ -26,6 +33,25 @@ class PasajeroNecEsp extends Pasajero{
 
     public function setComidaEsp($comidaEspNew){
         $this->comidaEsp = $comidaEspNew;
+    }
+
+    public function __toString(){
+        if ($this->getSillaRuedas()){
+            $silla="Si";
+        } else {
+            $silla="No";
+        }
+        if ($this->getAsistencia()){
+            $asistencia="Si";
+        } else {
+            $asistencia="No";
+        }
+        if ($this->getComidaEsp()){
+            $comida="Si";
+        } else {
+            $comida="No";
+        }
+        return parent::__toString() . "\nrequiere silla de ruedas?: " . $silla . "\nrequiere asistencia?: " . $asistencia . "\nrequiere un menu de comida especializado?: " . $comida;
     }
 
     public function darPorcentajeIncremento(){

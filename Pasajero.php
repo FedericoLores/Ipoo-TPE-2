@@ -1,28 +1,16 @@
 <?php
-class Pasajero {
-    private $nombre;
-    private $apellido;
+class Pasajero extends Persona{
     private $telefono;
     private $nroDoc;
     private $numAsiento;
     private $numTicket;
 
-    public function __construct($nombreCnstr, $numAsientoCnstr, $numTicketCnstr){
-        $this->nombre = $nombreCnstr;
+    public function __construct($nombreCnstr, $apellidoCnstr, $telefonoCnstr, $nroDocCnstr, $numAsientoCnstr, $numTicketCnstr){
+        parent::__construct($nombreCnstr, $apellidoCnstr);
+        $this->telefono = $telefonoCnstr;
+        $this->nroDoc = $nroDocCnstr;
         $this->numAsiento = $numAsientoCnstr;
         $this->numTicket = $numTicketCnstr;
-    }
-
-    public function getNombre(){
-        return $this->nombre;
-    }
-
-    public function getApellido(){
-        return $this->apellido;
-    }
-
-    public function setApellido($apellidoNew){
-        $this->apellido = $apellidoNew;
     }
 
     public function getTelefono(){
@@ -49,10 +37,6 @@ class Pasajero {
         return $this->numTicket;
     }
 
-    public function setNombre($nombreNew){
-        $this->nombre = $nombreNew;
-    }
-
     public function setNumAsiento($numAsientoNew){
         $this->numAsiento = $numAsientoNew;
     }
@@ -63,7 +47,7 @@ class Pasajero {
 
 
     public function __toString(){
-        return "nombre: " . $this->getNombre() . "\napellido: " . $this->getApellido() . "\ntelefono: " . $this->getTelefono() . "\nnumero de documento: " . $this->getNroDoc() . "\nnumAsiento: " . $this->getNumAsiento(). "\nnumTicket: " . $this->getNumTicket();
+        return parent::__toString() . "\ntelefono: " . $this->getTelefono() . "\nnumero de documento: " . $this->getNroDoc() . "\nnumAsiento: " . $this->getNumAsiento(). "\nnumTicket: " . $this->getNumTicket();
     }
 
     public function darPorcentajeIncremento(){

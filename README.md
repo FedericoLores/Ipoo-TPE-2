@@ -9,5 +9,3 @@ Modificar la clase viaje para almacenar el costo del viaje, la suma de los costo
 
 
 Implemente la función hayPasajesDisponible() que retorna verdadero si la cantidad de pasajeros del viaje es menor a la cantidad máxima de pasajeros y falso caso contrario
-
-//falta terminar de actualizar el test con los atributos de pasajeros

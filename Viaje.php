@@ -3,11 +3,11 @@
 class Viaje {
     private $codigo;//int
     private $destino;//string
-    private $pasajeros;//arreglo de objetos nombre/apellido/numDoc/telefono
+    private $pasajeros;//arreglo
     private $maxPasajeros;//int
-    private $responsableViaje;//obj nombre/apellido/
-    private $costoViaje;
-    private $costosAbonados; //acumuladoe
+    private $responsableViaje;//obj
+    private $costoViaje;//int
+    private $costosAbonados; //acumulador
 
     public function __construct($codigoCnstr ,$destinoCnstr, $pasajerosCnstr, $maxPasajerosCnstr, $responsableViajeCnstr, $costoViajeCnstr, $costosAbonadosCnstr){
         $this->codigo = $codigoCnstr;
