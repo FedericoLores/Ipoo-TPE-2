@@ -62,14 +62,8 @@ class Viaje {
         $this->pasajeros = $pasajerosNew;
     }
 
-    //
     public function setUnPasajero($indice, $unPasajero){
         $this->pasajeros[$indice] = $unPasajero;
-    }
-
-    //
-    public function setDatoUnPasajero($indice, $llave, $dato){
-        $this->pasajeros[$indice][$llave] = $dato;
     }
 
     public function setMaxPasajeros($maxPasajerosNew){
@@ -114,7 +108,7 @@ class Viaje {
     public function seRepite($numeroDocumento){
         $i = 0;
         $repetido = false;
-        while ($i<count($this->getPasajeros()) && $this->getPasajeros()[$i]->getNumDoc() != $numeroDocumento){
+        while ($i<count($this->getPasajeros()) && $this->getPasajeros()[$i]->getNroDoc() != $numeroDocumento){
             $i++;
         }
         if ($i<count($this->getPasajeros())){
@@ -127,10 +121,13 @@ class Viaje {
      * @return boolean
      */
     public function hayPasajesDisponible(){
-        $tieneEspacio = count($this->getPasajeros()) < $this->getMaxPasajeros();
-        return $tieneEspacio;
+        $pasajeDisponible = count($this->getPasajeros()) < $this->getMaxPasajeros();
+        return $pasajeDisponible;
     }
 
+    /** recibe obj pasajero y lo agrega a la lista de pasajeros
+     * @param Pasajero
+     */
     public function agregarPasajero($objPasajero){
         $this->setUnPasajero(count($this->getPasajeros()), $objPasajero);
     }
@@ -141,14 +138,21 @@ class Viaje {
     */
     public function borrarPasajero($numeroPasajero){
         $arregloPasajeros = $this->getPasajeros();
-        unset($arregloPasajeros[$numeroPasajero]);
-        $arregloPasajeros = array_values($arregloPasajeros);
+        unset($arregloPasajeros[$numeroPasajero]); //se borra el pasajero
+        $arregloPasajeros = array_values($arregloPasajeros); //se vuelve a ordenar el arreglo numericamente
         $this->setPasajeros($arregloPasajeros);
     }
 
+    /** recibe obj pasajero, lo agrega a la lista, agrega el costo a la lista, y retorna el costo
+     * @param Pasajero
+     * @return float
+     */
     public function venderPasaje($objPasajero){
         $costo = -1;
         if($this->hayPasajesDisponible()){
+            //se reescribe el numero de ticket que tiene objPasajero ya que la venta se realiza aqui
+            $numeroTicket = count($this->getPasajeros()) + 1;
+            $objPasajero->setNumTicket($numeroTicket);
             $this->agregarPasajero($objPasajero);
             $costo += $costo * $objPasajero->darPorcentajeIncremento();
             $this->setCostosAbonados($this->getCostosAbonados() + $costo);

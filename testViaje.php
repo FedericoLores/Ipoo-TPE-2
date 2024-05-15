@@ -5,15 +5,34 @@ include_once 'Pasajero.php';
 include_once 'PasajeroVip.php';
 include_once 'PasajeroNecEsp.php';
 include_once 'ResponsableV.php';
-//se asume que el usuario va a ingresar datos del tipo que se le pide
+/*Por recomendacion de la cátedra se asume que el usuario va a ingresar datos del tipo que se le pide
+y respeta mayúsculas, campos de texto y alfanuméricos. Se asume que numero de asiento es algo 
+que se puede elegir en vez de ser asignado, y que el numero de asiento puede ser mayor a la cantidad
+maxima de pasajeros. No se ponen limites al cambiar datos ya existentes*/
+
+
+/** recibe un importe y lo muestra, si es -1 da una respuesta guardada
+ * @param float $importe
+ */
+function mostrarImporte($importe){
+    if($importe != -1){
+        echo "El costo del pasaje es de $" . $importe . ".\n";
+    } else {
+        echo "No hay queda espacio disponible en el viaje";
+    }
+}
 
 $opcion=0;
-$pasajero1 = new Pasajero("Roberto", "Esponja", 111222333, 11111111, 1, 1);
-$pasajero2 = new PasajeroVIP("Patricio", "Estrella", 123123123, 22222222, 2, 2, 1, 500);
-$pasajero3 = new PasajeroNecEsp("Calamardo", "Tentaculos", 321321321, 33333333, 3, 3, true, true, false);
-$arregloPasajero = [$pasajero1, $pasajero2, $pasajero3];
+//el orden es (nombre, apellido, telefono, nro documento, num asiento, num ticket)
+$pasajero1 = new Pasajero("Roberto", "Esponja", 111222333, 11111111, 5, 1);
+$pasajero2 = new PasajeroVIP("Patricio", "Estrella", 123123123, 22222222, 9, 2, 1, 500);
+$pasajero3 = new PasajeroNecEsp("Calamardo", "Tentaculos", 321321321, 33333333, 2, 3, true, true, false);
 $objResponsable = new ResponsableV("Eugenio", "Cangrejo", 666, 123456);
-$objViaje = new Viaje(1000, "jujuy", $arregloPasajero, 4, $objResponsable, [], []);
+$objViaje = new Viaje(1000, "jujuy", [], 6, $objResponsable, 900, 0);
+
+$objViaje->venderPasaje($pasajero1);
+$objViaje->venderPasaje($pasajero2);
+$objViaje->venderPasaje($pasajero3);
 
 //menu
 do {
@@ -192,7 +211,7 @@ do {
             if ($objViaje->hayPasajesDisponible()){
                 echo "ingrese documento: ";
                 $documentoP= trim(fgets(STDIN));
-                if (!($objViaje->seRepite($documento))){
+                if (!($objViaje->seRepite($documentoP))){
                     echo "ingrese 'Regular' para agregar un pasajero regular, 'VIP' para agregar un pasajero vip, o 'Necesidades Especiales' para agregar un pasajero con necesidades especiales :";
                     $tipoPas = trim(fgets(STDIN));
                     switch($tipoPas){
@@ -205,10 +224,8 @@ do {
                             $telefonoP= trim(fgets(STDIN));
                             echo "ingrese numero de asiento: ";
                             $asientoP= trim(fgets(STDIN));
-                            echo "ingrese numero de ticket: ";
-                            $ticketP= trim(fgets(STDIN));
-                            $pasajero = new Pasajero($nombreP, $apellidoP, $telefonoP, $documentoP, $asientoP, $ticketP);
-                            $objViaje->agregarPasajero($pasajero);
+                            $pasajero = new Pasajero($nombreP, $apellidoP, $telefonoP, $documentoP, $asientoP, 0);
+                            mostrarImporte($objViaje->venderPasaje($pasajero));
                             echo "agregado\n";
                             break;
                         case "VIP":
@@ -220,13 +237,11 @@ do {
                             $telefonoP= trim(fgets(STDIN));
                             echo "ingrese numero de asiento: ";
                             $asientoP= trim(fgets(STDIN));
-                            echo "ingrese numero de ticket: ";
-                            $ticketP= trim(fgets(STDIN));
                             echo "ingrese numero de viajero frecuente: ";
                             $viajeroFrecuenteP= trim(fgets(STDIN));
                             echo "ingrese cantidad de millas: ";
                             $millasP= trim(fgets(STDIN));
-                            $pasajero = new PasajeroVIP($nombreP, $apellidoP, $telefonoP, $documentoP, $asientoP, $ticketP, $viajeroFrecuenteP, $millasP);
+                            $pasajero = new PasajeroVIP($nombreP, $apellidoP, $telefonoP, $documentoP, $asientoP, 0, $viajeroFrecuenteP, $millasP);
                             $objViaje->agregarPasajero($pasajero);
                             echo "agregado\n";
                             break;
@@ -239,8 +254,6 @@ do {
                             $telefonoP= trim(fgets(STDIN));
                             echo "ingrese numero de asiento: ";
                             $asientoP= trim(fgets(STDIN));
-                            echo "ingrese numero de ticket: ";
-                            $ticketP= trim(fgets(STDIN));
                             echo "requiere silla de ruedas? Ingrese 'si', o cualquier otra cosa si no requiere: ";
                             $entrada=trim(fgets(STDIN));
                             $sillaP = $entrada == "si";
@@ -250,7 +263,7 @@ do {
                             echo "requiere un menu de comida especializada? Ingrese 'si', o cualquier otra cosa si no requiere: ";
                             $entrada=trim(fgets(STDIN));
                             $comidaP = $entrada == "si";
-                            $pasajero = new PasajeroNecEsp($nombreP, $apellidoP, $telefonoP, $documentoP, $asientoP, $ticketP, $sillaP, $asistenciaP, $comidaP);
+                            $pasajero = new PasajeroNecEsp($nombreP, $apellidoP, $telefonoP, $documentoP, $asientoP, 0, $sillaP, $asistenciaP, $comidaP);
                             $objViaje->agregarPasajero($pasajero);
                             echo "agregado\n";
                             //////////////
@@ -265,7 +278,6 @@ do {
             } else {
                 echo "no hay espacio en el viaje";
             }
-            
             break;
         case 6:
             //borrar pasajero
