@@ -212,31 +212,23 @@ do {
                 echo "ingrese documento: ";
                 $documentoP= trim(fgets(STDIN));
                 if (!($objViaje->seRepite($documentoP))){
+                    echo "ingrese nombre: ";
+                    $nombreP= trim(fgets(STDIN));
+                    echo "ingrese apellido: ";
+                    $apellidoP= trim(fgets(STDIN));
+                    echo "ingrese telefono: ";
+                    $telefonoP= trim(fgets(STDIN));
+                    echo "ingrese numero de asiento: ";
+                    $asientoP= trim(fgets(STDIN));
                     echo "ingrese 'Regular' para agregar un pasajero regular, 'VIP' para agregar un pasajero vip, o 'Necesidades Especiales' para agregar un pasajero con necesidades especiales :";
                     $tipoPas = trim(fgets(STDIN));
                     switch($tipoPas){
                         case "Regular":
-                            echo "ingrese nombre: ";
-                            $nombreP= trim(fgets(STDIN));
-                            echo "ingrese apellido: ";
-                            $apellidoP= trim(fgets(STDIN));
-                            echo "ingrese telefono: ";
-                            $telefonoP= trim(fgets(STDIN));
-                            echo "ingrese numero de asiento: ";
-                            $asientoP= trim(fgets(STDIN));
                             $pasajero = new Pasajero($nombreP, $apellidoP, $telefonoP, $documentoP, $asientoP, 0);
                             mostrarImporte($objViaje->venderPasaje($pasajero));
                             echo "agregado\n";
                             break;
                         case "VIP":
-                            echo "ingrese nombre: ";
-                            $nombreP= trim(fgets(STDIN));
-                            echo "ingrese apellido: ";
-                            $apellidoP= trim(fgets(STDIN));
-                            echo "ingrese telefono: ";
-                            $telefonoP= trim(fgets(STDIN));
-                            echo "ingrese numero de asiento: ";
-                            $asientoP= trim(fgets(STDIN));
                             echo "ingrese numero de viajero frecuente: ";
                             $viajeroFrecuenteP= trim(fgets(STDIN));
                             echo "ingrese cantidad de millas: ";
@@ -246,14 +238,6 @@ do {
                             echo "agregado\n";
                             break;
                         case "Necesidades Especiales":
-                            echo "ingrese nombre: ";
-                            $nombreP= trim(fgets(STDIN));
-                            echo "ingrese apellido: ";
-                            $apellidoP= trim(fgets(STDIN));
-                            echo "ingrese telefono: ";
-                            $telefonoP= trim(fgets(STDIN));
-                            echo "ingrese numero de asiento: ";
-                            $asientoP= trim(fgets(STDIN));
                             echo "requiere silla de ruedas? Ingrese 'si', o cualquier otra cosa si no requiere: ";
                             $entrada=trim(fgets(STDIN));
                             $sillaP = $entrada == "si";
